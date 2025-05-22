@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Box Office Predictor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Movie Box Office Predictor</h1>
+        <form id="prediction-form">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="movie_year">Year:</label>
+                    <input type="number" id="movie_year" name="movie_year" value="2015" required>
+                </div>
+                <div class="form-group">
+                    <label for="budget">Budget ($):</label>
+                    <input type="number" id="budget" name="budget" value="100000000" required>
+                </div>
+                 <div class="form-group">
+                    <label for="domestic">Domestic Gross ($):</label>
+                    <input type="number" id="domestic" name="domestic" value="150000000">
+                </div>
+                <div class="form-group">
+                    <label for="international">International Gross ($):</label>
+                    <input type="number" id="international" name="international" value="200000000">
+                </div>
+                <div class="form-group">
+                    <label for="run_time">Run Time (e.g., 1 hr 30 min):</label>
+                    <input type="text" id="run_time" name="run_time" value="1 hr 45 min" required>
+                </div>
+                <div class="form-group">
+                    <label for="mpaa">MPAA Rating:</label>
+                    <select id="mpaa" name="mpaa">
+                        <option value="G">G</option>
+                        <option value="PG" selected>PG</option>
+                        <option value="PG-13">PG-13</option>
+                        <option value="R">R</option>
+                        <option value="NC-17">NC-17</option>
+                        <option value="Unknown">Unknown/Not Rated</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="director">Director:</label>
+                    <input type="text" id="director" name="director" value="J.J. Abrams">
+                </div>
+                <div class="form-group">
+                    <label for="writer">Writer:</label>
+                    <input type="text" id="writer" name="writer" value="Lawrence Kasdan">
+                </div>
+                <div class="form-group">
+                    <label for="producer">Producer:</label>
+                    <input type="text" id="producer" name="producer" value="Kathleen Kennedy">
+                </div>
+                <div class="form-group">
+                    <label for="composer">Composer:</label>
+                    <input type="text" id="composer" name="composer" value="John Williams">
+                </div>
+                <div class="form-group">
+                    <label for="cinematographer">Cinematographer:</label>
+                    <input type="text" id="cinematographer" name="cinematographer" value="Dan Mindel">
+                </div>
+                 <div class="form-group">
+                    <label for="distributor">Distributor:</label>
+                    <input type="text" id="distributor" name="distributor" value="Walt Disney Studios Motion Pictures">
+                </div>
+
+                <div class="form-group">
+                    <label for="main_actor_1">Main Actor 1:</label>
+                    <input type="text" id="main_actor_1" name="main_actor_1" value="Harrison Ford">
+                </div>
+                <div class="form-group">
+                    <label for="main_actor_2">Main Actor 2:</label>
+                    <input type="text" id="main_actor_2" name="main_actor_2" value="Mark Hamill">
+                </div>
+                <div class="form-group">
+                    <label for="main_actor_3">Main Actor 3:</label>
+                    <input type="text" id="main_actor_3" name="main_actor_3" value="Carrie Fisher">
+                </div>
+                <div class="form-group">
+                    <label for="main_actor_4">Main Actor 4:</label>
+                    <input type="text" id="main_actor_4" name="main_actor_4" value="Adam Driver">
+                </div>
+                
+                <div class="form-group">
+                    <label for="genre_1">Genre 1:</label>
+                    <input type="text" id="genre_1" name="genre_1" value="Action" required>
+                </div>
+                <div class="form-group">
+                    <label for="genre_2">Genre 2:</label>
+                    <input type="text" id="genre_2" name="genre_2" value="Adventure">
+                </div>
+                <div class="form-group">
+                    <label for="genre_3">Genre 3:</label>
+                    <input type="text" id="genre_3" name="genre_3" value="Sci-Fi">
+                </div>
+                <div class="form-group">
+                    <label for="genre_4">Genre 4:</label>
+                    <input type="text" id="genre_4" name="genre_4" value="">
+                </div>
+            </div>
+            <button type="submit">Predict Box Office</button>
+        </form>
+        <div id="result-container">
+            <h2>Predicted Worldwide Gross:</h2>
+            <p id="prediction-result">-</p>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
