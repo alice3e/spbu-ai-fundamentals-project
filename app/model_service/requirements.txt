@@ -1,9 +1,12 @@
-fastapi
-uvicorn[standard]
-pandas
-numpy
-scikit-learn
-joblib
+fastapi>=0.100.0
+uvicorn[standard]>=0.20.0
+pydantic>=2.0.0 # или <2.0.0 если используете старые валидаторы
+pandas>=1.5.0
+numpy>=1.20.0
+scikit-learn>=1.1.0 # Для joblib и трансформеров
+xgboost>=1.6.0
 category_encoders
-xgboost
-pydantic>=2.0
+# category_encoders - если вы его используете и он не включен в sklearn
+# Например: category_encoders>=2.5.0
+# Проверьте, что все импорты в predictor.py покрыты
+# joblib уже включен в scikit-learn
