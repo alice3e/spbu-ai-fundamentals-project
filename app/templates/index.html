@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Movie Box Office Predictor</title>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
@@ -12,103 +13,179 @@
         <form id="prediction-form">
             <div class="form-grid">
                 <div class="form-group">
+                    <label for="movie_title">Movie Title:</label>
+                    <input type="text" id="movie_title" name="movie_title" placeholder="e.g., The Matrix" required>
+                </div>
+                <div class="form-group">
                     <label for="movie_year">Year:</label>
-                    <input type="number" id="movie_year" name="movie_year" value="2015" required>
+                    <input type="number" id="movie_year" name="movie_year" value="2023" min="1900" max="2050" required>
                 </div>
                 <div class="form-group">
                     <label for="budget">Budget ($):</label>
-                    <input type="number" id="budget" name="budget" value="100000000" required>
+                    <input type="number" id="budget" name="budget" value="100000000" min="1000" required>
                 </div>
-                 <div class="form-group">
-                    <label for="domestic">Domestic Gross ($):</label>
-                    <input type="number" id="domestic" name="domestic" value="150000000">
-                </div>
-                <div class="form-group">
-                    <label for="international">International Gross ($):</label>
-                    <input type="number" id="international" name="international" value="200000000">
-                </div>
+                <!-- domestic и international УДАЛЕНЫ, т.к. они часть предсказания или не должны быть входными -->
                 <div class="form-group">
                     <label for="run_time">Run Time (e.g., 1 hr 30 min):</label>
-                    <input type="text" id="run_time" name="run_time" value="1 hr 45 min" required>
+                    <input type="text" id="run_time" name="run_time" value="1 hr 45 min" placeholder="X hr Y min" required>
                 </div>
                 <div class="form-group">
                     <label for="mpaa">MPAA Rating:</label>
-                    <select id="mpaa" name="mpaa">
-                        <option value="G">G</option>
-                        <option value="PG" selected>PG</option>
-                        <option value="PG-13">PG-13</option>
-                        <option value="R">R</option>
-                        <option value="NC-17">NC-17</option>
+                    <select id="mpaa" name="mpaa" class="select2-enable" required>
+                        <option value="" disabled selected>Select MPAA</option>
+                        {% for rating in options.ALL_MPAA_RATINGS %}
+                        <option value="{{ rating }}">{{ rating }}</option>
+                        {% endfor %}
                         <option value="Unknown">Unknown/Not Rated</option>
                     </select>
                 </div>
 
                 <div class="form-group">
                     <label for="director">Director:</label>
-                    <input type="text" id="director" name="director" value="J.J. Abrams">
+                    <select id="director" name="director" class="select2-enable" data-placeholder="Select Director">
+                        <option value=""></option> <!-- Пустая опция для placeholder в Select2 -->
+                        {% for item in options.ALL_DIRECTORS %}
+                        <option value="{{ item }}">{{ item }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="writer">Writer:</label>
-                    <input type="text" id="writer" name="writer" value="Lawrence Kasdan">
+                    <select id="writer" name="writer" class="select2-enable" data-placeholder="Select Writer">
+                        <option value=""></option>
+                        {% for item in options.ALL_WRITERS %}
+                        <option value="{{ item }}">{{ item }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="producer">Producer:</label>
-                    <input type="text" id="producer" name="producer" value="Kathleen Kennedy">
+                     <select id="producer" name="producer" class="select2-enable" data-placeholder="Select Producer">
+                        <option value=""></option>
+                        {% for item in options.ALL_PRODUCERS %}
+                        <option value="{{ item }}">{{ item }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="composer">Composer:</label>
-                    <input type="text" id="composer" name="composer" value="John Williams">
+                    <select id="composer" name="composer" class="select2-enable" data-placeholder="Select Composer">
+                        <option value=""></option>
+                        {% for item in options.ALL_COMPOSERS %}
+                        <option value="{{ item }}">{{ item }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="cinematographer">Cinematographer:</label>
-                    <input type="text" id="cinematographer" name="cinematographer" value="Dan Mindel">
+                    <select id="cinematographer" name="cinematographer" class="select2-enable" data-placeholder="Select Cinematographer">
+                        <option value=""></option>
+                        {% for item in options.ALL_CINEMATOGRAPHERS %}
+                        <option value="{{ item }}">{{ item }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
                  <div class="form-group">
                     <label for="distributor">Distributor:</label>
-                    <input type="text" id="distributor" name="distributor" value="Walt Disney Studios Motion Pictures">
+                    <select id="distributor" name="distributor" class="select2-enable" data-placeholder="Select Distributor">
+                        <option value=""></option>
+                        {% for item in options.ALL_DISTRIBUTORS %}
+                        <option value="{{ item }}">{{ item }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
 
                 <div class="form-group">
                     <label for="main_actor_1">Main Actor 1:</label>
-                    <input type="text" id="main_actor_1" name="main_actor_1" value="Harrison Ford">
+                    <select id="main_actor_1" name="main_actor_1" class="select2-enable" data-placeholder="Select Actor 1">
+                        <option value=""></option>
+                        {% for actor in options.ALL_ACTORS %}
+                        <option value="{{ actor }}">{{ actor }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="main_actor_2">Main Actor 2:</label>
-                    <input type="text" id="main_actor_2" name="main_actor_2" value="Mark Hamill">
+                    <select id="main_actor_2" name="main_actor_2" class="select2-enable" data-placeholder="Select Actor 2">
+                        <option value=""></option>
+                         {% for actor in options.ALL_ACTORS %}
+                        <option value="{{ actor }}">{{ actor }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="main_actor_3">Main Actor 3:</label>
-                    <input type="text" id="main_actor_3" name="main_actor_3" value="Carrie Fisher">
+                    <select id="main_actor_3" name="main_actor_3" class="select2-enable" data-placeholder="Select Actor 3">
+                        <option value=""></option>
+                         {% for actor in options.ALL_ACTORS %}
+                        <option value="{{ actor }}">{{ actor }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
                 <div class="form-group">
-                    <label for="main_actor_4">Main Actor 4:</label>
-                    <input type="text" id="main_actor_4" name="main_actor_4" value="Adam Driver">
+                    <label for="main_actor_4">Main Actor 4: (Optional)</label>
+                    <select id="main_actor_4" name="main_actor_4" class="select2-enable" data-placeholder="Select Actor 4 (Optional)">
+                        <option value=""></option> <!-- Позволяет не выбирать -->
+                         {% for actor in options.ALL_ACTORS %}
+                        <option value="{{ actor }}">{{ actor }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
                 
                 <div class="form-group">
                     <label for="genre_1">Genre 1:</label>
-                    <input type="text" id="genre_1" name="genre_1" value="Action" required>
+                    <select id="genre_1" name="genre_1" class="select2-enable" data-placeholder="Select Genre 1" required>
+                        <option value="" disabled selected>Select Genre 1</option>
+                        {% for genre in options.ALL_GENRES %}
+                        <option value="{{ genre }}">{{ genre }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
                 <div class="form-group">
-                    <label for="genre_2">Genre 2:</label>
-                    <input type="text" id="genre_2" name="genre_2" value="Adventure">
+                    <label for="genre_2">Genre 2: (Optional)</label>
+                    <select id="genre_2" name="genre_2" class="select2-enable" data-placeholder="Select Genre 2 (Optional)">
+                        <option value=""></option>
+                        {% for genre in options.ALL_GENRES %}
+                        <option value="{{ genre }}">{{ genre }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
                 <div class="form-group">
-                    <label for="genre_3">Genre 3:</label>
-                    <input type="text" id="genre_3" name="genre_3" value="Sci-Fi">
+                    <label for="genre_3">Genre 3: (Optional)</label>
+                    <select id="genre_3" name="genre_3" class="select2-enable" data-placeholder="Select Genre 3 (Optional)">
+                        <option value=""></option>
+                        {% for genre in options.ALL_GENRES %}
+                        <option value="{{ genre }}">{{ genre }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
                 <div class="form-group">
-                    <label for="genre_4">Genre 4:</label>
-                    <input type="text" id="genre_4" name="genre_4" value="">
+                    <label for="genre_4">Genre 4: (Optional)</label>
+                     <select id="genre_4" name="genre_4" class="select2-enable" data-placeholder="Select Genre 4 (Optional)">
+                        <option value=""></option>
+                        {% for genre in options.ALL_GENRES %}
+                        <option value="{{ genre }}">{{ genre }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
             </div>
             <button type="submit">Predict Box Office</button>
         </form>
-        <div id="result-container">
+        <div id="result-container" style="display: none;"> <!-- Initially hidden -->
             <h2>Predicted Worldwide Gross:</h2>
             <p id="prediction-result">-</p>
         </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            $('.select2-enable').select2({
+                allowClear: true, // Добавляет крестик для очистки значения (если есть пустая <option>)
+                width: '100%'    // Заставляет Select2 занимать всю ширину родителя
+            });
+        });
+    </script>
 </body>
 </html>
