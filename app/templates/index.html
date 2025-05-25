@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Movie Box Office Predictor</title>
+    <!-- Select2 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <!-- Ваш CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
@@ -24,168 +26,97 @@
                     <label for="budget">Budget ($):</label>
                     <input type="number" id="budget" name="budget" value="100000000" min="1000" required>
                 </div>
-                <!-- domestic и international УДАЛЕНЫ, т.к. они часть предсказания или не должны быть входными -->
                 <div class="form-group">
                     <label for="run_time">Run Time (e.g., 1 hr 30 min):</label>
                     <input type="text" id="run_time" name="run_time" value="1 hr 45 min" placeholder="X hr Y min" required>
                 </div>
+
+                <!-- MPAA - статический Select2, так как список короткий -->
                 <div class="form-group">
                     <label for="mpaa">MPAA Rating:</label>
-                    <select id="mpaa" name="mpaa" class="select2-enable" required>
+                    <select id="mpaa" name="mpaa" class="select2-static" data-placeholder="Select MPAA" required>
                         <option value="" disabled selected>Select MPAA</option>
                         {% for rating in options.ALL_MPAA_RATINGS %}
                         <option value="{{ rating }}">{{ rating }}</option>
+                        {% else %}
+                        <option value="PG-13">PG-13 (Default)</option> <!-- Если список пуст -->
                         {% endfor %}
                         <option value="Unknown">Unknown/Not Rated</option>
                     </select>
                 </div>
 
+                <!-- Поля с AJAX Select2 -->
                 <div class="form-group">
                     <label for="director">Director:</label>
-                    <select id="director" name="director" class="select2-enable" data-placeholder="Select Director">
-                        <option value=""></option> <!-- Пустая опция для placeholder в Select2 -->
-                        {% for item in options.ALL_DIRECTORS %}
-                        <option value="{{ item }}">{{ item }}</option>
-                        {% endfor %}
-                    </select>
+                    <select id="director" name="director" class="select2-ajax" data-placeholder="Search for a Director"></select>
                 </div>
                 <div class="form-group">
                     <label for="writer">Writer:</label>
-                    <select id="writer" name="writer" class="select2-enable" data-placeholder="Select Writer">
-                        <option value=""></option>
-                        {% for item in options.ALL_WRITERS %}
-                        <option value="{{ item }}">{{ item }}</option>
-                        {% endfor %}
-                    </select>
+                    <select id="writer" name="writer" class="select2-ajax" data-placeholder="Search for a Writer"></select>
                 </div>
                 <div class="form-group">
                     <label for="producer">Producer:</label>
-                     <select id="producer" name="producer" class="select2-enable" data-placeholder="Select Producer">
-                        <option value=""></option>
-                        {% for item in options.ALL_PRODUCERS %}
-                        <option value="{{ item }}">{{ item }}</option>
-                        {% endfor %}
-                    </select>
+                     <select id="producer" name="producer" class="select2-ajax" data-placeholder="Search for a Producer"></select>
                 </div>
                 <div class="form-group">
                     <label for="composer">Composer:</label>
-                    <select id="composer" name="composer" class="select2-enable" data-placeholder="Select Composer">
-                        <option value=""></option>
-                        {% for item in options.ALL_COMPOSERS %}
-                        <option value="{{ item }}">{{ item }}</option>
-                        {% endfor %}
-                    </select>
+                    <select id="composer" name="composer" class="select2-ajax" data-placeholder="Search for a Composer"></select>
                 </div>
                 <div class="form-group">
                     <label for="cinematographer">Cinematographer:</label>
-                    <select id="cinematographer" name="cinematographer" class="select2-enable" data-placeholder="Select Cinematographer">
-                        <option value=""></option>
-                        {% for item in options.ALL_CINEMATOGRAPHERS %}
-                        <option value="{{ item }}">{{ item }}</option>
-                        {% endfor %}
-                    </select>
+                    <select id="cinematographer" name="cinematographer" class="select2-ajax" data-placeholder="Search for a Cinematographer"></select>
                 </div>
                  <div class="form-group">
                     <label for="distributor">Distributor:</label>
-                    <select id="distributor" name="distributor" class="select2-enable" data-placeholder="Select Distributor">
-                        <option value=""></option>
-                        {% for item in options.ALL_DISTRIBUTORS %}
-                        <option value="{{ item }}">{{ item }}</option>
-                        {% endfor %}
-                    </select>
+                    <select id="distributor" name="distributor" class="select2-ajax" data-placeholder="Search for a Distributor"></select>
                 </div>
 
                 <div class="form-group">
                     <label for="main_actor_1">Main Actor 1:</label>
-                    <select id="main_actor_1" name="main_actor_1" class="select2-enable" data-placeholder="Select Actor 1">
-                        <option value=""></option>
-                        {% for actor in options.ALL_ACTORS %}
-                        <option value="{{ actor }}">{{ actor }}</option>
-                        {% endfor %}
-                    </select>
+                    <select id="main_actor_1" name="main_actor_1" class="select2-ajax" data-placeholder="Search for Actor 1"></select>
                 </div>
                 <div class="form-group">
                     <label for="main_actor_2">Main Actor 2:</label>
-                    <select id="main_actor_2" name="main_actor_2" class="select2-enable" data-placeholder="Select Actor 2">
-                        <option value=""></option>
-                         {% for actor in options.ALL_ACTORS %}
-                        <option value="{{ actor }}">{{ actor }}</option>
-                        {% endfor %}
-                    </select>
+                    <select id="main_actor_2" name="main_actor_2" class="select2-ajax" data-placeholder="Search for Actor 2"></select>
                 </div>
                 <div class="form-group">
                     <label for="main_actor_3">Main Actor 3:</label>
-                    <select id="main_actor_3" name="main_actor_3" class="select2-enable" data-placeholder="Select Actor 3">
-                        <option value=""></option>
-                         {% for actor in options.ALL_ACTORS %}
-                        <option value="{{ actor }}">{{ actor }}</option>
-                        {% endfor %}
-                    </select>
+                    <select id="main_actor_3" name="main_actor_3" class="select2-ajax" data-placeholder="Search for Actor 3"></select>
                 </div>
                 <div class="form-group">
                     <label for="main_actor_4">Main Actor 4: (Optional)</label>
-                    <select id="main_actor_4" name="main_actor_4" class="select2-enable" data-placeholder="Select Actor 4 (Optional)">
-                        <option value=""></option> <!-- Позволяет не выбирать -->
-                         {% for actor in options.ALL_ACTORS %}
-                        <option value="{{ actor }}">{{ actor }}</option>
-                        {% endfor %}
-                    </select>
+                    <select id="main_actor_4" name="main_actor_4" class="select2-ajax" data-placeholder="Search for Actor 4 (Optional)"></select>
                 </div>
                 
                 <div class="form-group">
                     <label for="genre_1">Genre 1:</label>
-                    <select id="genre_1" name="genre_1" class="select2-enable" data-placeholder="Select Genre 1" required>
-                        <option value="" disabled selected>Select Genre 1</option>
-                        {% for genre in options.ALL_GENRES %}
-                        <option value="{{ genre }}">{{ genre }}</option>
-                        {% endfor %}
-                    </select>
+                    <select id="genre_1" name="genre_1" class="select2-ajax" data-placeholder="Search for Genre 1" required></select>
                 </div>
                 <div class="form-group">
                     <label for="genre_2">Genre 2: (Optional)</label>
-                    <select id="genre_2" name="genre_2" class="select2-enable" data-placeholder="Select Genre 2 (Optional)">
-                        <option value=""></option>
-                        {% for genre in options.ALL_GENRES %}
-                        <option value="{{ genre }}">{{ genre }}</option>
-                        {% endfor %}
-                    </select>
+                    <select id="genre_2" name="genre_2" class="select2-ajax" data-placeholder="Search for Genre 2 (Optional)"></select>
                 </div>
                 <div class="form-group">
                     <label for="genre_3">Genre 3: (Optional)</label>
-                    <select id="genre_3" name="genre_3" class="select2-enable" data-placeholder="Select Genre 3 (Optional)">
-                        <option value=""></option>
-                        {% for genre in options.ALL_GENRES %}
-                        <option value="{{ genre }}">{{ genre }}</option>
-                        {% endfor %}
-                    </select>
+                    <select id="genre_3" name="genre_3" class="select2-ajax" data-placeholder="Search for Genre 3 (Optional)"></select>
                 </div>
                 <div class="form-group">
                     <label for="genre_4">Genre 4: (Optional)</label>
-                     <select id="genre_4" name="genre_4" class="select2-enable" data-placeholder="Select Genre 4 (Optional)">
-                        <option value=""></option>
-                        {% for genre in options.ALL_GENRES %}
-                        <option value="{{ genre }}">{{ genre }}</option>
-                        {% endfor %}
-                    </select>
+                     <select id="genre_4" name="genre_4" class="select2-ajax" data-placeholder="Search for Genre 4 (Optional)"></select>
                 </div>
             </div>
             <button type="submit">Predict Box Office</button>
         </form>
-        <div id="result-container" style="display: none;"> <!-- Initially hidden -->
+        <div id="result-container" style="display: none;">
             <h2>Predicted Worldwide Gross:</h2>
             <p id="prediction-result">-</p>
         </div>
     </div>
+    <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Select2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <!-- Ваш JS -->
     <script src="{{ url_for('static', filename='script.js') }}"></script>
-    <script>
-        $(document).ready(function() {
-            $('.select2-enable').select2({
-                allowClear: true, // Добавляет крестик для очистки значения (если есть пустая <option>)
-                width: '100%'    // Заставляет Select2 занимать всю ширину родителя
-            });
-        });
-    </script>
 </body>
 </html>

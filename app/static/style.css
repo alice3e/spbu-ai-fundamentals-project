@@ -101,3 +101,12 @@ button[type="submit"]:hover {
     color: #2980b9;
     text-align: center;
 }
+
+.form-group.error-field select,
+.form-group.error-field input {
+    border-color: #e74c3c !important; /* Красная рамка для ошибки */
+}
+
+.form-group.error-field label {
+    color: #e74c3c !important; /* Красный цвет для метки */
+}
