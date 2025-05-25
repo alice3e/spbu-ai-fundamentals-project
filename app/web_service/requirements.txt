@@ -1,0 +1,5 @@
+flask
+pandas
+numpy
+requests 
+# gunicorn # Если будете использовать Gunicorn для запуска в Docker

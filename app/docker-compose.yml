@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  web_ui:
+    build:
+      context: ./web_service
+      dockerfile: Dockerfile
+    ports:
+      - "5019:5019" # Маппинг порта Flask на хост
+    volumes:
+      # Для разработки можно монтировать код, чтобы не пересобирать образ при каждом изменении
+      # - ./web_service:/app 
+      # В продакшене это обычно не делается
+      - ./web_service/available_options.py:/app/available_options.py # Если генерируется локально
+    depends_on:
+      - model_api
+    environment:
+      - MODEL_SERVICE_URL=http://model_api:8017 # Передаем URL сервиса модели
+      - FLASK_ENV=development # или production
+    networks:
+      - movie_network
+
+  model_api:
+    build:
+      context: ./model_service
+      dockerfile: Dockerfile
+    ports:
+      - "8017:8017" # Маппинг порта FastAPI (можно не мапить, если доступ только из web_ui)
+    volumes:
+      # Для разработки:
+      # - ./model_service:/app 
+      # В продакшене артефакты копируются в образ, монтирование не нужно, если они не меняются часто
+      - ./model_service/saved_model:/app/saved_model # Убедимся, что артефакты доступны
+    networks:
+      - movie_network
+
+networks:
+  movie_network:
+    driver: bridge
